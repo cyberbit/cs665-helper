@@ -1,0 +1,17 @@
+{
+  "name": "fillsql",
+  "version": "1.0.0",
+  "description": "simple node.js app to fill a db for cs665",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Danny",
+  "license": "ISC",
+  "dependencies": {
+    "chance": "^1.0.6",
+    "datejs": "^1.0.0-rc3",
+    "pg": "^6.1.5",
+    "prompt": "^1.0.0"
+  }
+}
