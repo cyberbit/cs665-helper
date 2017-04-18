@@ -13,7 +13,7 @@ module.exports = class CustomChance {
     }
 
     createBugTicket() {
-        var ticket = chance.ticket();
+        var ticket = chance.ticket(0);
         var bug = chance.bug(ticket.ticketId);
 
         var ticketAndBug = {
@@ -25,7 +25,7 @@ module.exports = class CustomChance {
     }
 
     createEnhancementTicket() {
-        var ticket = chance.ticket();
+        var ticket = chance.ticket(1);
         var enhancement = chance.enhancement(ticket.ticketId);
 
         var ticketAndEnhancement = {
@@ -37,7 +37,7 @@ module.exports = class CustomChance {
     }
 
     createRequestTicket() {
-        var ticket = chance.ticket();
+        var ticket = chance.ticket(2);
         var request = chance.request(ticket.ticketId);
 
         var ticketAndRequest = {
@@ -49,7 +49,7 @@ module.exports = class CustomChance {
     }
 
     createSupportTicket() {
-        var ticket = chance.ticket();
+        var ticket = chance.ticket(3);
         var support = chance.support(ticket.ticketId);
 
         var ticketAndSupport = {
@@ -124,7 +124,7 @@ chance.mixin({
 });
 
 chance.mixin({
-    'ticket': () => {
+    'ticket': (type) => {
         var ticket = {
             ticketId: '',
             description: '',
@@ -143,7 +143,7 @@ chance.mixin({
         ticket.ticketId = chance.guid();
         ticket.description = chance.sentence();
         ticket.status = chance.pickone([0, 1]);
-        ticket.ticketType = chance.pickone([0, 1, 2, 3]);
+        ticket.ticketType = type;
         ticket.urgency = chance.pickone([0, 1, 2]);
         ticket.reportedBy = chance.name();
         ticket.reportedDate = new Date(tmpDate);

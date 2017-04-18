@@ -18,6 +18,7 @@ function showPrompt() {
     4. insert random request ticket into db
     5. insert random support ticket into db
     6. query
+    7. query (repeating)
 	
 	To exit type 'exit'`);
     prompt.get(['option'], (err, results) => {
@@ -38,21 +39,16 @@ function showPrompt() {
                 createSupportTicket();
                 break;
             case '6':
-                prompt.get(['query'], (err, result) => {
-                    pool.query(result.query, (err, result) => {
-                        if (err) {
-                            console.log('Error: ', err);
-                        } else {
-                            console.log('Query Success');
-                            console.log('Results: ');
-                            console.log(result.rows);
-                            showPrompt();
-                        }
-                    });
-                })
+                query(false);
+                break;
+            case '7':
+                query(true);
                 break;
             case 'exit':
                 process.exit();
+                break;
+            default:
+                showPrompt();
                 break;
         }
         // if (results.option !== 'exit') {
@@ -189,6 +185,36 @@ function insertTicket(ticket, callback) {
         ]
     }, (err, result) => {
         callback(err, result);
+    });
+}
+
+
+function query(repeat) {
+    prompt.get(['query'], (err, result) => {
+        if (result.query !== 'exit') {
+            console.log('here');
+            pool.query(result.query, (err, result) => {
+                if (err) {
+                    console.log('Error: ', err);
+                    if (repeat) {
+                        query(true);
+                    } else {
+                        showPrompt();
+                    }
+                } else {
+                    console.log('Query Success');
+                    console.log('Results: ');
+                    console.log(result.rows);
+                    if (repeat) {
+                        query(true);
+                    } else {
+                        showPrompt();
+                    }
+                }
+            });
+        } else {
+            showPrompt();
+        }
     });
 }
 
