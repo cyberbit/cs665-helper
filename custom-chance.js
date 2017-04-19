@@ -59,7 +59,34 @@ module.exports = class CustomChance {
 
         return ticketAndSupport;
     }
+
+    createComment(ticketId) {
+        var comment = chance.comment(ticketId);
+
+        return comment;
+    }
 }
+
+chance.mixin({
+    'comment': (ticketId) => {
+        var comment = {
+            id: '',
+            content: '',
+            created: '',
+            ticketId: ''
+        }
+        comment.id = chance.guid();
+        var sentence = chance.sentence();
+        comment.content = sentence.substring(0, sentence.length -1) + ' ' + chance.pick(['keyword', 'error', 'system', 'help' + '.',
+         'fire', 'computer', 'user', 'broken', 
+         'fix', 'please', 'coffee and keyboard', 'utter failure', 
+         'nothing works', 'database', 'down', 'mouse']);
+        comment.created = chance.date({ year: chance.pickone([2016, 2017]) });
+        comment.ticketId = ticketId;
+
+        return comment;
+    }
+});
 
 chance.mixin({
     'support': (ticketId) => {
