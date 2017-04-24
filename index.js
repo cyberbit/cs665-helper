@@ -247,7 +247,8 @@ function preparedQueries() {
                         } else {
                             console.log('Query Success');
                             console.log('Results: ');
-                            console.log(result.rows);
+                            console.log(results.rows);
+                            showPrompt();
                         }
                     });
                 });
