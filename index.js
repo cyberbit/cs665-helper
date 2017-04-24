@@ -14,39 +14,23 @@ prompt.start();
 function showPrompt() {
     console.log(`
     1. generate random ticket
-    2. insert random bug ticket into db
-    3. insert random enhancement ticket into db
-    4. insert random request ticket into db
-    5. insert random support ticket into db
-    6. query
-    7. query (repeating)
-    8. prepared queries
+    2. query
+    3. query (repeating)
+    4. prepared queries
 	
 	To exit type 'exit'`);
     prompt.get(['option'], (err, results) => {
         switch (results.option) {
             case '1':
-                console.log(customChance.createTicket());
+                insertTicketIntoDb();
                 break;
             case '2':
-                createBugTicket();
-                break;
-            case '3':
-                createEnhancementTicket();
-                break;
-            case '4':
-                createRequestTicket();
-                break;
-            case '5':
-                createSupportTicket();
-                break;
-            case '6':
                 query(false);
                 break;
-            case '7':
+            case '3':
                 query(true);
                 break;
-            case '8':
+            case '4':
                 preparedQueries();
                 break;
             case 'exit':
@@ -59,6 +43,42 @@ function showPrompt() {
         // if (results.option !== 'exit') {
         //     showPrompt();
         // }
+    });
+}
+
+function insertTicketIntoDb() {
+    console.log(`
+            1. insert random bug ticket into db
+            2. insert random enhancement ticket into db
+            3. insert random request ticket into db
+            4. insert random support ticket into db`);
+
+    prompt.get(['option'], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            switch (result.option) {
+                case '1':
+                    createBugTicket();
+                    break;
+                case '2':
+                    createEnhancementTicket();
+                    break;
+                case '3':
+                    createRequestTicket();
+                    break;
+                case '4':
+                    createSupportTicket();
+                    break;
+                case 'exit':
+                    process.exit();
+                    break;
+                default:
+                    showPrompt();
+                    break;
+            }
+        }
+
     });
 }
 
@@ -230,6 +250,9 @@ function preparedQueries() {
     }
 
     prompt.get(['option'], (err, result) => {
+        if (result.option === 'exit') {
+            process.exit();
+        }
         if (result.option > 0 && result.option <= keys.length) {
             var query = queries[keys[result.option - 1]];
             if (query.variables > 0) {
