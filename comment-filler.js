@@ -27,7 +27,6 @@ function fillComments(tickets, cb) {
                 console.log(err);
             }
             if (++inserted === tickets.length) {
-                console.log('iteration: ', i);
                 cb(result);
             }
         });

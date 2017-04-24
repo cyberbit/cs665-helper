@@ -5,6 +5,7 @@ const Status = require('./models/status');
 const Type = require('./models/type');
 const Urgency = require('./models/urgency');
 const ReproductionRate = require('./models/reproduction-rate');
+const queries = require('./preparedQueries');
 require('datejs');
 
 var customChance = new CustomChance();
@@ -19,6 +20,7 @@ function showPrompt() {
     5. insert random support ticket into db
     6. query
     7. query (repeating)
+    8. prepared queries
 	
 	To exit type 'exit'`);
     prompt.get(['option'], (err, results) => {
@@ -43,6 +45,9 @@ function showPrompt() {
                 break;
             case '7':
                 query(true);
+                break;
+            case '8':
+                preparedQueries();
                 break;
             case 'exit':
                 process.exit();
@@ -192,7 +197,6 @@ function insertTicket(ticket, callback) {
 function query(repeat) {
     prompt.get(['query'], (err, result) => {
         if (result.query !== 'exit') {
-            console.log('here');
             pool.query(result.query, (err, result) => {
                 if (err) {
                     console.log('Error: ', err);
@@ -216,6 +220,53 @@ function query(repeat) {
             showPrompt();
         }
     });
+}
+
+function preparedQueries() {
+    console.log('Prepared Queries:');
+    var keys = Object.keys(queries);
+    for (var i = 0; i < keys.length; i++) {
+        console.log(i + 1 + ': ', keys[i]);
+    }
+
+    prompt.get(['option'], (err, result) => {
+        if (result.option > 0 && result.option <= keys.length) {
+            var query = queries[keys[result.option - 1]];
+            if (query.variables > 0) {
+                var values = [];
+                console.log('enter value for variables ', query.variableNames);
+                prompt.get(query.variableNames, (err, result) => {
+                    query.variableNames.forEach((element) => {
+                        values.push(result[element]);
+                    });
+
+                    var readyQuery = prepareQuery(query.query, values);
+                    pool.query(readyQuery, (err, results) => {
+                        if (err) {
+                            console.log('Error: ', err);
+                        } else {
+                            console.log('Query Success');
+                            console.log('Results: ');
+                            console.log(result.rows);
+                        }
+                    });
+                });
+            }
+        }
+    });
+}
+
+function prepareQuery(query, values) {
+    var dateString = "(DATE '" + Date.today().toString('MM-dd-yyyy') + "')";
+    var newQuery;
+    newQuery = query.replace(/INPUT_DATE/gi, dateString);
+    if (values.length > 0) {
+        values.forEach((element, i) => {
+            var regEx = new RegExp("VALUE" + (i + 1), "gi");
+            newQuery = newQuery.replace(regEx, "'" + element + "'");
+        });
+    }
+    return newQuery;
 }
 
 showPrompt();

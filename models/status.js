@@ -1,6 +1,6 @@
 module.exports = class Status {
     constructor() {
-        RESOLVED = 0;
-        PENDING = 1;
+        RESOLVED = 1;
+        PENDING = 0;
     }
 }
