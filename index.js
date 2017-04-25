@@ -347,9 +347,10 @@ function prepareQuery(query, values) {
     if (values.length > 0) {
         values.forEach((element, i) => {
             var regEx = new RegExp("VALUE" + (i + 1), "gi");
-            newQuery = newQuery.replace(regEx, "'" + element + "'");
+            newQuery = newQuery.replace(regEx, element);
         });
     }
+    console.log(newQuery);
     return newQuery;
 }
 
