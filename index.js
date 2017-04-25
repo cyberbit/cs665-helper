@@ -102,8 +102,23 @@ function createBugTicket() {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(result.rows);
-                    showPrompt();
+                    var label = customChance.createLabel(bugTicket.ticket.ticketId);
+                    pool.query({
+                        name: 'label',
+                        text: 'insert into labels(id, "ticketId", name) values($1, $2, $3)',
+                        values: [
+                            label.id,
+                            label.ticketId,
+                            label.name,
+                        ]
+                    }, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(result.rows);
+                            showPrompt();
+                        }
+                    });
                 }
             });
         }
@@ -129,8 +144,23 @@ function createEnhancementTicket() {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(result.rows);
-                    showPrompt();
+                    var label = customChance.createLabel(enhancementTicket.ticket.ticketId);
+                    pool.query({
+                        name: 'label',
+                        text: 'insert into labels(id, "ticketId", name) values($1, $2, $3)',
+                        values: [
+                            label.id,
+                            label.ticketId,
+                            label.name,
+                        ]
+                    }, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(result.rows);
+                            showPrompt();
+                        }
+                    });
                 }
             });
         }
@@ -156,8 +186,23 @@ function createRequestTicket() {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(result.rows);
-                    showPrompt();
+                    var label = customChance.createLabel(requestTicket.ticket.ticketId);
+                    pool.query({
+                        name: 'label',
+                        text: 'insert into labels(id, "ticketId", name) values($1, $2, $3)',
+                        values: [
+                            label.id,
+                            label.ticketId,
+                            label.name,
+                        ]
+                    }, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(result.rows);
+                            showPrompt();
+                        }
+                    });
                 }
             });
         }
@@ -183,8 +228,23 @@ function createSupportTicket() {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(result.rows);
-                    showPrompt();
+                    var label = customChance.createLabel(supportTicket.ticket.ticketId);
+                    pool.query({
+                        name: 'label',
+                        text: 'insert into labels(id, "ticketId", name) values($1, $2, $3)',
+                        values: [
+                            label.id,
+                            label.ticketId,
+                            label.name,
+                        ]
+                    }, (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(result.rows);
+                            showPrompt();
+                        }
+                    });
                 }
             });
         }

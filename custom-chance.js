@@ -65,7 +65,28 @@ module.exports = class CustomChance {
 
         return comment;
     }
+
+    createLabel(ticketId) {
+        var label = chance.label(ticketId);
+
+        return label;
+    }
 }
+
+chance.mixin({
+    'label': (ticketId) => {
+        var label = {
+            id: '',
+            ticketId: '',
+            name: ''
+        }
+        label.id = chance.guid();
+        label.ticketId = ticketId;
+        label.name = chance.pickone(['backend', 'frontend', 'database', 'internal', 'qa']);
+
+        return label;
+    }
+});
 
 chance.mixin({
     'comment': (ticketId) => {
@@ -77,7 +98,7 @@ chance.mixin({
         }
         comment.id = chance.guid();
         var sentence = chance.sentence();
-        comment.content = sentence.substring(0, sentence.length -1) + ' ' + chance.pick(['keyword', 'error', 'system', 'help' + '.',
+        comment.content = sentence.substring(0, sentence.length -1) + ' ' + chance.pickone(['keyword', 'error', 'system', 'help' + '.',
          'fire', 'computer', 'user', 'broken', 
          'fix', 'please', 'coffee and keyboard', 'utter failure', 
          'nothing works', 'database', 'down', 'mouse']);
